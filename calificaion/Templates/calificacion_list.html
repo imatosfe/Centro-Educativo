@@ -1,0 +1,23 @@
+<h1>Calificaciones</h1>
+<table>
+    <tr>
+        <th>Estudiante</th>
+        <th>Asignatura</th>
+        <th>Nota</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+    </tr>
+    {% for calificacion in calificaciones %}
+    <tr>
+        <td>{{ calificacion.estudiante.nombre }}</td>
+        <td>{{ calificacion.asignatura.nombre }}</td>
+        <td>{{ calificacion.nota }}</td>
+        <td>{{ calificacion.fecha }}</td>
+        <td>
+            <a href="{% url 'calificacion-detail' calificacion.id %}">Ver</a>
+            <a href="{% url 'calificacion-update' calificacion.id %}">Editar</a>
+            <a href="{% url 'calificacion-delete' calificacion.id %}">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

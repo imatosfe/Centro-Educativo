@@ -1,0 +1,23 @@
+<h1>Reporte General</h1>
+{% for grado in grados %}
+<h2>Grado: {{ grado.nombre }}</h2>
+    {% for seccion in grado.secciones.all %}
+    <h3>Sección: {{ seccion.nombre }}</h3>
+    <table>
+        <tr>
+            <th>Estudiante</th>
+            <th>Calificaciones</th>
+        </tr>
+        {% for estudiante in seccion.estudiantes.all %}
+        <tr>
+            <td>{{ estudiante.nombre }}</td>
+            <td>
+                {% for calificacion in estudiante.calificaciones.all %}
+                {{ calificacion.asignatura.nombre }}: {{ calificacion.nota }}<br>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+{% endfor %}
