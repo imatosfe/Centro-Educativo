@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sistema Educativo HTP</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Agregar SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Estilos de DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    
+    <!-- jQuery y DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Bootstrap Datepicker CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
+
+
+    <!-- Template Main CSS File -->
+
+  <link href="/static/paginaprincipal.css" rel="stylesheet">
+  <link href="/static/stylecarrucel.css" rel="stylesheet">
+  
+   
+</head>
+
+
+<body>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+    
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+    
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+    
+        .show {
+            display: block;
+        }
+    </style>
+    <!-- Barra de navegación superior -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="/static/logohtp.png" alt="Logo HTP" style="width: 60px;">
+            Sistema Educativo HTP
+            <div class="toggle-btn" id="toggle-btn">
+                &#9776; <!-- Ícono de menú desplegable -->
+            </div>
+        </div>
+     
+        <div class="user-info">
+            <img src="/static/notificacion.png" alt="Notificación">
+            {% if user.is_authenticated %}
+                <span>{{ user }}</span>  <!-- Nombre completo del usuario -->
+                <div class="dropdown">
+                    <img src="{{ user.imagen.url }}" alt="Usuario" class="dropdown-toggle" onclick="toggleDropdown()">
+                    <div class="dropdown-content" id="myDropdown">
+                        <a href="">Perfil</a>
+                      <a href="{% url 'editar_perfil' %}">Editar Perfil</a>
+                      <a href="{% url 'cambiar_password' %}">Cambiar Contraseña</a>
+                        
+                        <a href="{% url 'logout' %}">Cerrar sesión</a>
+                    </div>
+                </div>
+                <img src="/static/desplazar.png" alt="Desplazar">
+            {% else %}
+                <span>Inicie sesión para ver su información.</span>
+            {% endif %}
+
+
+
+        
+        </div>
+        
+        
+        
+
+    </div>
+ 
+
+    
+      <!-- Menú lateral (Sidebar) -->
+<!-- Menú lateral (Sidebar) -->
+<div class="sidebar" id="sidebar">
+    <h2>Menú Principal</h2>
+
+    <ul>
+        <li><a href="{% url 'inicio' %}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+    
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubMenu('estudiantes-submenu')">
+                <i class="fas fa-user-graduate"></i><span>Estudiantes</span>
+            </a>
+            <ul id="estudiantes-submenu" class="submenu">
+                <li><a href="{% url 'lista_estudiantes' %}"><i class="fas fa-list"></i> Lista de Estudiantes</a></li>
+                <li><a href="{% url 'crear_estudiante' %}"><i class="fas fa-user-plus"></i> Crear</a></li>
+            </ul>
+        </li>
+    
+        <li><a href="#"><i class="fas fa-file-alt"></i> <span>Solicitudes</span></a></li>
+    
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubMenu('profesores-submenu')">
+                <i class="fas fa-chalkboard-teacher"></i> <span>Profesores</span>
+            </a>
+            <ul id="profesores-submenu" class="submenu">
+                <li><a href="{% url 'lista_profesores' %}"><i class="fas fa-user-tie"></i> Lista de profesores</a></li>
+                <li><a href="{% url 'crear_profesor' %}"><i class="fas fa-user-plus"></i> Crear</a></li>
+            </ul>
+        </li>
+    
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubMenu('cursos-submenu')">
+                <i class="fas fa-book"></i>  <span>Cursos</span>
+            </a>
+            <ul id="cursos-submenu" class="submenu">
+                <li><a href="{% url 'lista_cursos' %}"><i class="fas fa-list"></i> Lista de Cursos</a></li>
+                <li><a href="{% url 'crear_curso' %}"><i class="fas fa-plus"></i> Crear</a></li>
+            </ul>
+        </li>
+    
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubMenu('secciones-submenu')">
+                <i class="fas fa-columns"></i> <span>Secciones</span>
+            </a>
+            <ul id="secciones-submenu" class="submenu">
+                <li><a href="{% url 'crear_seccion' %}"><i class="fas fa-plus"></i> Crear</a></li>
+                <li><a href="{% url 'lista_secciones' %}"><i class="fas fa-list"></i> Lista de Secciones</a></li>
+            </ul>
+        </li>
+    
+        <li>
+            <a href="javascript:void(0);" onclick="toggleSubMenu('facturacion-submenu')">
+                <i class="fas fa-money-bill-wave"></i>    <span>Facturación</span>
+            </a>
+            <ul id="facturacion-submenu" class="submenu">
+                <li><a href="{% url 'listar_cuentas_por_cobrar' %}"><i class="fas fa-money-check-alt"></i> Cuenta por Cobrar</a></li>
+                <li><a href="{% url 'listar_tarifas' %}"><i class="fas fa-tags"></i> Listar Tarifas</a></li>
+                <li><a href="{% url 'crear_tarifa' %}"><i class="fas fa-plus"></i> Crear Tarifa</a></li>
+                <li><a href="#"><i class="fas fa-edit"></i> Editar Tarifa</a></li>
+                <li><a href="{% url 'listar_facturas' %}"><i class="fas fa-file-invoice"></i> Listar Factura</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+</div>
+
+
+    <!-- Área de contenido -->
+    <div class="content" id="content">
+   
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endif %}
+        {% block contenido %}
+        <h1>Bienvenido al Sistema de Gestión Educativa HTP</h1>
+        <p>Seleccione una opción en el menú de la izquierda para empezar a trabajar.</p>
+
+
+    
+      
+
+                               
+                                    
+        
+
+
+         
+
+
+             
+        {% endblock %}
+    </div>
+
+
+
+    <!-- Pie de página -->
+    <footer>
+        &copy; 2024 Centro Educativo HTP - Todos los derechos reservados.
+    </footer>
+
+    <script src="/static/Paginaprincipal.js"></script>
+    <script src="/static/carrucel.js"></script>
+
+</body>
+
+
+<script>
+    function toggleDropdown() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+</html>

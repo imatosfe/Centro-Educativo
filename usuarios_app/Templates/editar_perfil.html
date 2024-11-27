@@ -1,0 +1,115 @@
+{% extends "principal/inicio2.html" %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <h2 class="mb-4">Editar Perfil</h2> <!-- Mostrar 'Crear Perfil' si no hay usuario -->
+    
+    {% if user.id %}
+    <div class="d-flex justify-content-end">
+        <a href="{% url 'cambiar_password' %}" class="btn btn-warning" type="button">Cambiar Contraseña</a>
+    </div>
+    {% endif %}
+    
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate  id="formRegistrarUsuario">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.nombre|as_crispy_field }}
+                </div>
+                <div class="form-group">
+                    {{ form.apellido|as_crispy_field }}
+                </div>
+                <div class="form-group">
+                    {{ form.telefono|as_crispy_field }}
+                </div>
+             
+                <div class="form-group">
+                    {{ form.username|as_crispy_field }} <!-- Campo para el email -->
+                </div>
+                <div class="form-group">
+                    {{ form.email|as_crispy_field }} <!-- Campo para el email -->
+                </div>
+        
+                <div class="form-group">
+                    {{ form.identificacion|as_crispy_field }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.direccion|as_crispy_field }}
+                </div>
+
+
+       
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="usuarioActivo" name="usuario_activo" value="true" {% if user.usuario_activo %}checked{% endif %}>
+                    <label class="form-check-label" for="usuarioActivo">Activo</label>
+                </div>
+                
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="usuarioAdministrador" name="usuario_administrador" value="true" {% if user.usuario_administrador %}checked{% endif %}>
+                    <label class="form-check-label" for="usuarioAdministrador">Administrador</label>
+                </div>
+          
+            </div>
+            
+            <div class="col-md-6 input-group mb-3">
+                <div class="form-group ">
+
+
+                    {% if user.imagen %}
+                    <img id="image-preview"   class="input-group-text" for="inputGroupFile02" src="{{ user.imagen.url }}" alt="Imagen actual" style="width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px;">
+                    
+                    {% else %}
+                    <img id="image-preview"   src="" alt="Vista previa" style="display: none; width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px;">
+                    {% endif %}
+                
+                    {{ form.imagen|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{% url 'inicio' %}" class="btn btn-secondary">Volver</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('formRegistrarUsuario').onsubmit = function() {
+        // Limpiar los campos del formulario después de que se haya enviado
+        setTimeout(function() {
+            document.getElementById('formRegistrarUsuario').reset();
+        }, 500);  // Ajusta el tiempo si es necesario
+    };
+</script>
+<!-- Script para mensajes con SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    let icono = '';
+    switch ("{{ message.tags }}") {
+        case 'success': icono = 'success'; break;
+        case 'error': icono = 'error'; break;
+        case 'warning': icono = 'warning'; break;
+        case 'info': icono = 'info'; break;
+        default: icono = 'info';
+    }
+
+    Swal.fire({
+        toast: true,
+        icon: icono,
+        title: "{{ message }}",
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+    {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

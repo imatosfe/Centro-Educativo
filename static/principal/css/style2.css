@@ -1,0 +1,24 @@
+
+
+.dropdown-link {
+    display: block;
+    color: yellow; /* Color de texto amarillo */
+   
+    padding: 10px 0;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-link:hover {
+
+    color: #ffffff; /* Cambia el fondo al pasar el cursor */
+
+}
+
+/* Estilo para las líneas horizontales */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: yellow; /* Línea horizontal amarilla */
+    margin: 4px 0;
+}

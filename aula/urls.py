@@ -1,9 +1,7 @@
 from django.urls import path
 from .views import (
     # Importación de vistas ya creadas
-    AulaCreateView, AulaDeleteView, AulaDetailView, AulaListView, AulaUpdateView, SeccionListView, SeccionDetailView, SeccionCreateView, SeccionUpdateView, SeccionDeleteView,
-    ProfesorListView, ProfesorDetailView, ProfesorCreateView, ProfesorUpdateView, ProfesorDeleteView,
-    AsignaturaListView, AsignaturaDetailView, AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView,
+    AulaCreateView, AulaDeleteView, AulaDetailView, AulaListView, AulaUpdateView
 )
 
 urlpatterns = [

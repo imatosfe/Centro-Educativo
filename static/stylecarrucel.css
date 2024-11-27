@@ -1,0 +1,100 @@
+.carrusel {
+    position: relative;
+    max-width: 800px; /* Ancho máximo del carrusel */
+    margin: auto;
+    overflow: hidden; /* Oculta las partes que exceden el contenedor */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra del contenedor */
+    border: 5px solid #FFB3BA; /* Color rosa claro para el borde */
+    background-color: #FFFAF0; /* Fondo color crema suave */
+}
+
+.slides {
+    display: flex; /* Utiliza flexbox para alinear los slides en fila */
+    transition: transform 0.5s ease; /* Transición suave al cambiar de slide */
+}
+
+.slide {
+    min-width: 100%; /* Cada slide ocupa el 100% del ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+    position: relative; /* Permite posicionar el caption correctamente */
+}
+
+.slide img {
+    width: 100%; /* La imagen ocupa el 100% del slide */
+    border-radius: 15px; /* Bordes redondeados para la imagen */
+    border: 3px solid #FFABAB; /* Bordes color rojo claro para las imágenes */
+}
+
+.caption {
+    position: absolute;
+    bottom: 20px; /* Posiciona el caption en la parte inferior */
+    left: 20px; /* Espacio desde el borde izquierdo */
+    background-color: rgba(255, 204, 204, 0.8); /* Fondo suave color rosa claro */
+    color: #333; /* Color del texto */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.botones {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex; /* Utiliza flexbox para centrar los botones */
+    justify-content: space-between; /* Espacio entre los botones */
+    transform: translateY(-50%); /* Centra los botones verticalmente */
+}
+
+.boton {
+    background-color: #FFDDAB; /* Fondo color amarillo claro */
+    border: none; /* Sin borde */
+    border-radius: 50%; /* Botones redondos */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    padding: 15px; /* Espaciado interno */
+    transition: background-color 0.3s; /* Transición suave para el fondo */
+    font-size: 20px; /* Tamaño del texto */
+}
+
+.boton:hover {
+    background-color: #FFD700; /* Fondo dorado al pasar el mouse */
+}
+
+
+
+.car {
+    background-color: #FFD9E6; /* Fondo rosa claro */
+    color: #333; /* Texto oscuro */
+    border: 3px solid #FF6F61; /* Borde rojo suave */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Centrar el texto */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    margin: 20px; /* Margen externo */
+}
+
+.car h2 {
+    color: #FF6F61; /* Título en rojo suave */
+    font-size: 24px; /* Tamaño del título */
+}
+
+.car p {
+    font-size: 16px; /* Tamaño del texto */
+    margin: 10px 0; /* Espacio entre párrafos */
+}
+
+.cta-button {
+    background-color: #FFC107; /* Botón en amarillo brillante */
+    color: #fff; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 25px; /* Bordes redondeados para el botón */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto del botón */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s; /* Transición suave al cambiar de color */
+}
+
+.cta-button:hover {
+    background-color: #FFB300; /* Color más oscuro al pasar el mouse */
+}
+
+

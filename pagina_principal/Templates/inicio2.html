@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sistema Educativo HTP</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Bundle with Popper (incluye JavaScript) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+<link
+href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Agregar SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables JS -->
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="icon" href="/static/principal/css/favicon.png" type="image/x-icon">
+<!-- Styles -->
+<link href="/static/principal/css/materialdesignicons.min.css" rel="stylesheet">
+
+
+
+<link href="/static/principal/css/style.css" rel="stylesheet">
+<link href="/static/principal/css/style2.css" rel="stylesheet">
+<link href="/static/principal/css/carrucel.css" rel="stylesheet">
+
+
+
+   
+</head>
+
+
+<body>
+  {% if user.usuario_activo %}
+<div class="container-scroller">
+    <!-- partial:partials/_sidebar -->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+      <ul class="nav">
+        <li class="nav-item nav-profile border-bottom">
+          <a href="#" class="nav-link flex-column">
+              <div class="nav-profile-image">
+                  {% if user.is_authenticated %}
+                  <img src="{{ user.imagen.url }}" alt="Usuario" class="dropdown-toggle" onclick="toggleDropdown()">
+              </div>
+      
+              <div class="user-info">
+                  <div class="dropdown">
+                      <div class="dropdown-content" id="myDropdown" style="display: none;">
+                          <a href="#" class="dropdown-link">Perfil</a>
+                          <hr>
+                          {% if user.is_staff %}
+                          <a href="{% url 'crear_usuario' %}" class="dropdown-link">Crear Perfil</a>
+                          <hr>
+                      {% endif %}
+                    
+                          <a href="{% url 'editar_usuario' user_id=user.id %}" class="dropdown-link" >Editar </a>
+
+                          <hr>
+                          
+                
+              
+                      </div>
+                  </div>
+                  <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
+                      <span class="font-weight-semibold mb-1 mt-2 text-center" style="color: yellow;">{{ user }}</span>
+                  </div>
+                  {% else %}
+                  <span>Inicie sesión para ver su información.</span>
+                  {% endif %}
+              </div>
+          </a>
+      </li>
+      
+      
+      
+    
+      
+      
+        <li class="pt-2 pb-1">
+          <span class="nav-item-head">Menu</span>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'inicio' %}"class="nav-link" href="#">
+            <i  class="fas fa-home menu-icon"></i>
+            <span class="menu-title">Inicio</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="fas fa-user-graduate menu-icon"></i>
+            <span class="menu-title">Registro</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item">
+                <a  class="nav-link" href="{% url 'lista_estudiantes' %}">   <i class="fas fa-list menu-icon"></i> Estudiantes </a>
+       
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=""> <i class="fas fa-chalkboard-teacher menu-icon"></i> Profesor</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=""> <i class="fas fa-book menu-icon"></i>  Cursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">  <i class="fas fa-columns menu-icon"></i>  Secciones</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
+              <i class="  fas fa-money-bill-wave menu-icon"></i>
+              <span class="menu-title">Facturacion</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic2">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+          
+                  <a  class="nav-link"  href=""><i class="fas fa-money-check-alt menu-icon "></i> Cuenta por Cobrar</a>
+                </li>
+                <li class="nav-item"><a  class="nav-link" href=""><i class="fas fa-tags  menu-icon "></i> Listar Tarifas</a></li>
+             <li class="nav-item" ><a  class="nav-link" href=""><i class="fas fa-file-invoice  menu-icon  "></i> Listar Factura</a></li>
+              </ul>
+            </div>
+          </li>
+  
+
+
+
+      
+        <li class="nav-item">
+          <a class="nav-link" href="">
+            <i class="mdi mdi-chart-bar menu-icon"></i>
+            <span class="menu-title">Reportes</span>
+          </a>
+          <ul class="nav flex-column sub-menu">
+
+          </ul>
+        </li>
+
+
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_settings-panel -->
+      <div id="settings-trigger"><i class="mdi mdi-settings"></i></div>
+      <div id="theme-settings" class="settings-panel">
+        <i class="settings-close mdi mdi-close"></i>
+        <p class="settings-heading">SIDEBAR SKINS</p>
+        <div class="sidebar-bg-options selected" id="sidebar-default-theme">
+          <div class="img-ss rounded-circle bg-light border mr-3"></div>Default
+        </div>
+        <div class="sidebar-bg-options" id="sidebar-dark-theme">
+          <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+        </div>
+        <p class="settings-heading mt-2">HEADER SKINS</p>
+        <div class="color-tiles mx-0 px-4">
+          <div class="tiles default primary"></div>
+          <div class="tiles success"></div>
+          <div class="tiles warning"></div>
+          <div class="tiles danger"></div>
+          <div class="tiles info"></div>
+          <div class="tiles dark"></div>
+          <div class="tiles light"></div>
+        </div>
+      </div>
+      <!-- partial -->
+      <!-- partial:partials/_navbar -->
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-chevron-double-left"></span>
+          </button>
+          <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="#"><img src="/static/principal/assets/images/logo-mini.svg" alt="logo" /></a>
+          </div>
+
+          
+              
+        </div>
+     
+  
+      </nav>
+   
+
+    
+
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown ml-3">
+                    <a class="nav-link" id="notificationDropdown" href="#" data-toggle="dropdown">
+                        <i class="mdi mdi-bell-outline mdi-36px"></i>
+                        {% if conteo_notificaciones > 0 %}
+                            <span class="badge badge-pill badge-danger">{{ conteo_notificaciones }}</span>
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                        <h6 class="px-3 py-3 font-weight-semibold mb-0">Notifications</h6>
+                        <div class="dropdown-divider"></div>
+                        {% for notificacion in notificaciones %}
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-success">
+                                        <i class="mdi mdi-calendar"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject font-weight-normal mb-0">{{ notificacion.mensaje }}</h6>
+                                    <p class="text-gray ellipsis mb-0"> {{ notificacion.fecha_envio|date:"H:i A" }} </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        {% endfor %}
+                        <h6 class="p-3 font-13 mb-0 text-primary text-center">View all notifications</h6>
+                    </div>
+                    
+                </li>
+
+                
+            </ul>
+            <!-- Aquí colocamos el logout a la derecha -->
+    <!-- Aumentar el tamaño usando clases mdi -->
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <i class="mdi mdi-logout mdi-36px"></i> <!-- Cambia el valor a mdi-48px, mdi-24px, etc. según el tamaño deseado -->
+    </a>
+  </li>
+</ul>
+
+        </div>
+    </nav>
+    
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper pb-0">
+          <div class="page-header flex-wrap">
+
+
+
+            
+            <div class="header-left">
+         
+            </div>
+            <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
+              <div class="d-flex align-items-center">
+             
+              </div>
+         
+            </div>
+          </div>
+          <!-- first row starts here -->
+          <div class="row">
+            <div class="col-xl-12 stretch-card grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between flex-wrap">
+              
+                    <div class="col-xl-12 grid-margin" >
+   
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+                                {% block contenido %}
+                                <div class="car">
+                                  <h2>Bienvenido al Sistema de Gestion Escolar HTP</h2>
+                                  <p>Brindamos apoyo y herramientas para el bienestar emocional.</p>
+                                  <p>¡Juntos podemos lograr un cambio positivo!</p>
+                                  <button class="cta-button">¡Contáctanos!</button>
+                              </div>
+                                
+                                <div class="carrusel">
+                                  <div class="slides">
+                                      <div class="slide">
+                                          <img src="media/perfil/uma-lua-amarela-com-um-rosto-sorridente-e-um-rosto-sorridente_913665-2521.jpg" alt="Slide 1">
+                                          <div class="caption">Título del Slide 1<br>Descripción del contenido del Slide 1.</div>
+                                      </div>
+                                      <div class="slide">
+                                          <img src="media/perfil/pngegg.png" alt="Slide 2">
+                                          <div class="caption">Título del Slide 2<br>Descripción del contenido del Slide 2.</div>
+                                      </div>
+                                      <div class="slide">
+                                          <img src="media/perfil/pngegg.png" alt="Slide 3">
+                                          <div class="caption">Título del Slide 3<br>Descripción del contenido del Slide 3.</div>
+                                      </div>
+                                  </div>
+                                  <div class="botones">
+                                      <button class="boton" id="prevBtn">&#10094;</button>
+                                      <button class="boton" id="nextBtn">&#10095;</button>
+                                  </div>
+                              </div>
+                                                 
+                        
+                            
+                        
+                        
+                                     
+                                {% endblock contenido %}
+
+                                        
+                         
+                            
+                            </div>
+                 
+                       
+                  </div>
+          
+               
+                </div>
+              </div>
+            </div>
+         
+          </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer -->
+      
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2024</span>
+           
+          </div>
+  
+       
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  {% endif %}
+  <script src="/static/principal/js/carrucel.js"></script>
+  <script src="/static/principal/js/vendor.bundle.base.js"></script>
+<script src="/static/principal/js/jquery.barrating.min.js"></script>
+<script src="/static/principal/js/Chart.min.js"></script>
+<script src="/static/principal/js/jquery.flot.js"></script>
+<script src="/static/principal/js/jquery.flot.resize.js"></script>
+<script src="/static/principal/js/jquery.flot.categories.js"></script>
+<script src="/static/principal/js/jquery.flot.fillbetween.js"></script>
+<script src="/static/principal/js/jquery.flot.stack.js"></script>
+<script src="/static/principal/js/off-canvas.js"></script>
+<script src="/static/principal/js/hoverable-collapse.js"></script>
+<script src="/static/principal/js/misc.js"></script>
+<script src="/static/principal/js/settings.js"></script>
+<script src="/static/principal/js/todolist.js"></script>
+<script src="/static/principal/js/dashboard.js"></script>
+
+
+
+</body>
+<script>
+  function toggleDropdown() {
+      var dropdown = document.getElementById("myDropdown");
+      if (dropdown.style.display === "none" || dropdown.style.display === "") {
+          dropdown.style.display = "block";
+      } else {
+          dropdown.style.display = "none";
+      }
+  }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#estudiantesTable').DataTable({...});
+    });
+</script>
+<script>
+  // Obtenemos el primer mensaje de Django (si lo hay)
+  {% if messages %}
+      {% for message in messages %}
+          let icono = '';
+
+          // Determinamos el icono según el tipo de mensaje
+          switch ("{{ message.tags }}") {
+              case 'success':
+                  icono = 'success';
+                  break;
+              case 'error':
+                  icono = 'error';
+                  break;
+              case 'warning':
+                  icono = 'warning';
+                  break;
+              case 'info':
+                  icono = 'info';
+                  break;
+              default:
+                  icono = 'info'; // por defecto, mostramos un info
+          }
+
+          // Mostramos el toast con SweetAlert2
+          Swal.fire({
+              toast: true,
+              icon: icono,
+              title: "{{ message }}", // El contenido del mensaje
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true
+          });
+      {% endfor %}
+  {% endif %}
+</script>
+
+</body>
+</html>

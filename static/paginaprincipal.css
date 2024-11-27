@@ -1,0 +1,232 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Barra de navegación superior */
+.navbar {
+    background-color: #00215a; /* Azul oscuro */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 10px 20px;
+    position: fixed; /* Fijar la barra en la parte superior */
+    top: 0; /* Asegúrate de que esté en la parte superior */
+    left: 0; /* Alineación izquierda */
+    right: 0; /* Alineación derecha */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.navbar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFDD00; /* Amarillo */
+    display: flex;
+    align-items: center; /* Alinear verticalmente */
+}
+
+.navbar .logo img {
+    width: 100px;
+    vertical-align: middle;
+    margin-right: 10px; /* Espacio entre logo e ícono */
+}
+
+.navbar .toggle-btn {
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #0072CE;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 15px; /* Espacio entre el texto y el ícono de menú */
+}
+
+.navbar .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .user-info img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre todos los elementos */
+    color: #FFDD00; /* Amarillo */
+}
+
+
+
+
+
+
+.sidebar {
+    z-index: 10;
+    width: 250px;
+    background-color: #00215a;
+    color: #FFDD00; /* Amarillo */
+    padding: 20px;
+    position: fixed;
+    top: 60px;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    transition: width 0.3s ease;
+}
+
+.sidebar.hidden {
+    width: 60px; /* Ancho reducido para mostrar solo los íconos */
+    padding: 10px 0; /* Espacio reducido */
+}
+
+.sidebar h2 {
+    color: #FFDD00;
+    text-align: center;
+    font-size: 14px;
+    display: none; /* Ocultar el título cuando está oculto */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+
+.sidebar ul li a {
+    align-items: center; 
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex; 
+    padding: 10px;
+    background-color: #003366;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+
+.sidebar ul li a i {
+    margin-right: 8px; /* Espacio entre el ícono y el texto */
+    color: #FFDD00; /* Color de los iconos */
+    font-size: 20px; /* Aumentar el tamaño de los íconos */
+}
+
+.sidebar.hidden ul li a span { /* Para mostrar solo los íconos cuando está oculto */
+    display: none; /* Ocultar texto */
+}
+
+.sidebar.hidden ul li a {
+    justify-content: center; /* Centrar íconos cuando el menú está oculto */
+}
+
+
+
+
+
+.sidebar ul li a:hover {
+    background-color: #0072CE;
+}
+
+/* Área de contenido */
+
+.formulario-hijo {
+    position: sticky; /* Mantener el formulario fijo en la pantalla */
+   
+    
+    background-color: white; /* Color de fondo para el formulario */
+    overflow: hidden; /* Evitar barras de desplazamiento */
+    padding: 20px; /* Espaciado interno para el contenido */
+    box-sizing: border-box; /* Incluir el padding en el tamaño total */
+    display: flex; /* Usar flexbox para una disposición flexible */
+    flex-direction: column; /* Colocar los elementos en una columna */
+}
+
+.formulario-hijo h2 {
+    margin-top: 0; /* Eliminar el margen superior del encabezado */
+}
+
+.formulario-hijo .contenido {
+    flex: 1; /* Permitir que el contenido ocupe todo el espacio disponible */
+    overflow-y: auto; /* Barra de desplazamiento solo si es necesaria en el contenido interno */
+}
+
+.formulario-hijo .botones {
+    display: flex; /* Usar flexbox para los botones */
+    justify-content: flex-end; /* Alinear los botones a la derecha */
+    margin-top: 10px; /* Espacio superior entre el contenido y los botones */
+}
+
+
+.content {
+  
+    margin-left: 270px; /* Para dejar espacio al sidebar */
+    padding: 30px;
+    width: calc(100% - 290px); /* Ajustar el ancho del contenido para separar del sidebar */
+    margin-top: 70px; /* Espacio para la barra superior */
+    margin-bottom: 40px; /* Espacio antes del pie de página */
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    overflow-y: auto; /* Asegura que el contenido pueda desplazarse */
+    overflow-x: auto; /* Asegura que la barra de desplazamiento horizontal aparezca si es necesario */
+}
+
+
+.content.expanded {
+    margin-left: 0;
+    width: 100%;
+}
+
+/* Pie de página */
+footer {
+    background-color: #00215a;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed; /* Mantener el pie de página fijo en la parte inferior */
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px; /* Espacio adicional para separar el pie del contenido */
+}
+
+/* Estilo para el submenú */
+.submenu {
+    display: none; /* Inicialmente oculto */
+    list-style-type: none;
+    padding-left: 20px; /* Espacio a la izquierda */
+    margin-left: 20px; /* Espacio a la izquierda adicional */
+    position: absolute; /* Posicionamiento absoluto */
+    background-color: #00215a; /* Fondo del submenú */
+  /* Asegúrate de que esté por encima */
+}
+
+.sidebar ul li.active a {
+    color: #d1deec; /* Color para resaltar opción activa */
+}
+
+
+.submenu {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px; /* Espacio a la izquierda */
+    margin-left: 20px; /* Espacio a la izquierda adicional */
+}
+
+.sidebar ul li a i {
+    margin-right: 8px; /* Espacio entre el ícono y el texto */
+    color: #FFDD00; /* Color de los iconos */
+}
+
+
+.sidebar ul li:hover > .submenu {
+    display: block; /* Muestra el submenú al pasar el ratón */
+}
+

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrativo - Sistema HTP</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/fondologin.jpg'); /* Imagen de fondo */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            padding: 0 10%;
+        }
+
+        /* Estilos del login */
+        .login-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 40%;
+            margin-left: 30px; /* Separar del mensaje de bienvenida */
+        }
+
+        .login-box .icon {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-box .icon img {
+            width: 50px;
+        }
+
+        .login-box h2 {
+            color: #001F54;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-box input[type="text"], 
+        .login-box input[type="password"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-box input[type="submit"] {
+            background-color: #0072CE;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-box input[type="submit"]:hover {
+            background-color: #001F54;
+        }
+
+        .login-box .security-icon {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-box .security-icon img {
+            width: 40px;
+        }
+
+        /* Estilos del mensaje de bienvenida */
+        .welcome-box {
+            background-color: #001F54;
+            color: white;
+            padding: 50px;
+            border-radius: 10px;
+            width: 50%;
+            position: relative;
+        }
+
+        /* Agregando espacio entre el logo y el mensaje */
+        .welcome-box .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-box .logo img {
+            width: 140px; /* Ajustar tamaño del logo */
+        }
+
+        .welcome-box h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-box p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .login-box .icon img {
+            width: 80px; /* Ajusta el tamaño según lo que necesites */
+            height: auto; /* Mantener las proporciones de la imagen */
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Caja de Bienvenida con el logo -->
+    <div class="welcome-box">
+        <div class="logo">
+            <img src="/static/logohtp.png" alt="Logo del Centro HTP"> <!-- Logo del centro HTP -->
+        </div>
+        <h2>Bienvenido al Sistema de Gestión Educativa HTP</h2>
+        <p>
+            El Sistema HTP ha sido desarrollado para ofrecer una solución integral en la administración educativa, proporcionando a los administradores herramientas eficientes para gestionar inscripciones, cursos, profesores, y otros procesos clave. Este sistema garantiza un manejo seguro y confidencial de la información, con acceso restringido exclusivamente a usuarios autorizados, asegurando una experiencia de gestión ágil y fiable.
+        </p>
+    </div>
+
+    <!-- Caja de Login -->
+    <div class="login-box">
+        <div class="icon">
+            <img src="/static/seguridalogin.png" alt="Icono de Seguridad"> <!-- Icono agregado -->
+        </div>
+        <h2>Iniciar Sesión</h2>
+        <form  action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Nombre de usuario</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Acceder">
+        </form>
+        <br>
+        <a href="#"><center>¿Olvidó su nombre de usuario o contraseña?</center></a>
+        <div class="security-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Icono de Seguridad">
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    // Obtenemos el primer mensaje de Django (si lo hay)
+    {% if messages %}
+        {% for message in messages %}
+            let icono = '';
+
+            // Determinamos el icono según el tipo de mensaje
+            switch ("{{ message.tags }}") {
+                case 'success':
+                    icono = 'success';
+                    break;
+                case 'error':
+                    icono = 'error';
+                    break;
+                case 'warning':
+                    icono = 'warning';
+                    break;
+                case 'info':
+                    icono = 'info';
+                    break;
+                default:
+                    icono = 'info'; // por defecto, mostramos un info
+            }
+
+            // Mostramos el toast con SweetAlert2
+            Swal.fire({
+                toast: true,
+                icon: icono,
+                title: "{{ message }}", // El contenido del mensaje
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+
+</body>
+
+
+
+</html>
