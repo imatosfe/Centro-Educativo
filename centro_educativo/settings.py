@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0nmvdsf@az^q4jq--#bet=i8zf@*hm%q4l8ej_24zwr(o%xo=z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
               'bootstrap_datepicker_plus',
     "crispy_bootstrap5",
 ]
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -133,8 +134,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
 
 
 

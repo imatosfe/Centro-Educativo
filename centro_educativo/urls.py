@@ -39,7 +39,7 @@ path('estudiantes/', include('estudiante.urls')),
 
 
 
-   path('accounts/login/',Login.as_view(), name = 'login'),
+    path('accounts/login',Login.as_view(), name = 'login'),
     path('logout/',logout_usuario ,name = 'logout'),
 
 ]
