@@ -6,11 +6,11 @@ from django.shortcuts import render
 
 def inicio(request):
     try:
-        return render(request, 'landin.html', {})
+        return render(request, 'pagina_principal/templates/pagina_principal/landin.html', {})
     except Exception as e:
       
         # Return a default response if there is an error
-        return render(request, 'pagina_principal/Templates/pagina_principal/landin.html', {'error_message': str(e)})
+        return render(request, 'pagina_principal/templates/pagina_principal/landin.html', {'error_message': str(e)})
 
 
 import logging
