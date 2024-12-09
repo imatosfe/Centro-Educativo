@@ -74,14 +74,10 @@ class Estudiante(models.Model):
     # Información académica
     matricula = models.CharField(max_length=20, unique=True)
     fecha_ingreso = models.DateField(default=timezone.now)
-    promedio = models.DecimalField(
-        max_digits=4,
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(10)]
-    )
+  
     anio_escolar = models.CharField(max_length=10)  # Ej: 2024-2025
 
-    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='estudiantes')
+    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='estudiantes', blank=True, null=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

@@ -10,7 +10,7 @@ def inicio(request):
     except Exception as e:
       
         # Return a default response if there is an error
-        return render(request, 'pagina_principal/templates/pagina_principal/landin.html', {'error_message': str(e)})
+        return render(request, 'pagina_principal/landin.html', {'error_message': str(e)})
 
 
 import logging
@@ -34,4 +34,4 @@ def inicio2(request):
         })
     except Exception as e:
         logger.error(f'Error en la vista inicio: {str(e)}')
-        return render(request, 'inicio2.html', {'error_message': str(e)})
+        return render(request, 'pagina_principal/inicio2.html', {'error_message': str(e)})
