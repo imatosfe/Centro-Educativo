@@ -3,7 +3,7 @@ from django.db import models
 from grado.models import Grado
 
 # Create your models here.
-class Seccion(models.Model):
+class Secciones(models.Model):
     nombre = models.CharField(max_length=100)
     grado = models.ForeignKey(Grado, on_delete=models.CASCADE, related_name='secciones')
 

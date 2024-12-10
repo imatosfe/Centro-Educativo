@@ -9,54 +9,79 @@
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-
-<div class="text-right">
-    <a href="{% url 'crear_estudiante' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">  <i class="mdi mdi-plus-circle"></i> Agregar Nuevo Estudiante</a>
-</div>
-
-    <h2>Lista de Estudiantes</h2>
+    <title>Lista de Profesores</title>
+    <div class="text-right">
+        <a href="{% url 'crear_profesor' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">  <i class="mdi mdi-plus-circle"></i> Agregar Nuevo Profesor</a>
+    </div>
+    
+    
+        <h1>Lista de Profesores</h1>
+ 
+    <div class="formulario-hijo">
+        <table id="cursosTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profesor in profesores %}
+                <tr>
+                    <td>{{ profesor.nombre }}</td>
+                    <td>{{ profesor.apellido }}</td>
+                    <td>{{ profesor.especialidad }}</td>
+                    <td>{{ profesor.telefono }}</td>
+                    <td>
+                        <a href="{% url 'editar_profesor' profesor.id %}" class="btn btn-secondary btn-sm" > <i class="mdi mdi-pencil"></i>
+                            Editar</a>
+                   
+                        <button class="btn btn-danger btn-sm" onclick="confirmarEliminar({{ profesor.id }})">
+                            <i class="mdi mdi-trash-can"></i> Eliminar
+                        </button>
+                        
+                   
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No hay profesores registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+   
+    </div>
 
 
     
-<div class="formulario-hijo">
+<script>
+    $(document).ready(function() {
+        $('#cursosTable').DataTable({
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros en total)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            pageLength: 5,
+            responsive: true
+        });
+    });
+</script>
 
-    <table id="estudiantesTable" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Teléfono</th> 
-                <th>Fecha de Nacimiento</th>
-                <th>Promedio</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for estudiante in estudiantesss %}
-            <tr>
-                <td>{{ estudiante.nombre }}</td>
-                <td>{{ estudiante.apellido }}</td>
-                <td>{{ estudiante.email }}</td>
-                <td>{{ estudiante.telefono }}</td>
-                <td>{{ estudiante.fecha_nacimiento }}</td>
-                <td>{{ estudiante.promedio }}</td>
-                <td>
-                    <a class="btn btn-secondary btn-sm" href="{% url 'editar_estudiante' estudiante.id %}"> <i class="mdi mdi-pencil"></i> Editar</a>
-                    <a class="btn btn-danger btn-sm" href="#" onclick="confirmarEliminar({{ estudiante.id }})">   <i class="mdi mdi-trash-can"></i>  Eliminar</a>
-             
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7">No hay estudiantes registrados.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
 
-</div>
 
 
 <script>
@@ -111,7 +136,7 @@
             if (result.isConfirmed) {
                 // Realiza la solicitud AJAX para eliminar la sección
                 $.ajax({
-                    url: `{% url 'eliminar_estudiante' 0 %}`.replace('0', id), // URL de la vista de eliminación
+                    url: `{% url 'eliminar_profesor' 0 %}`.replace('0', id), // URL de la vista de eliminación
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF para la seguridad
@@ -122,7 +147,7 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Eliminado!',
-                                text: 'El estudiante ha sido eliminada.',
+                                text: 'El profesor ha sido eliminado.',
                                 toast: true,
                                 position: 'top-end',
                                 showConfirmButton: false,
@@ -147,7 +172,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Hubo un problema al intentar eliminar estudiante.',
+                            text: 'Hubo un problema al intentar eliminar profesor.',
                             confirmButtonText: 'Aceptar'
                         });
                     }
@@ -156,30 +181,6 @@
         });
     }
 </script>
-<script>
-    $(document).ready(function() {
-        $('#estudiantesTable').DataTable({
-            language: {
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "zeroRecords": "No se encontraron resultados",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "No hay registros disponibles",
-                "infoFiltered": "(filtrado de _MAX_ registros en total)",
-                "search": "Buscar:",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-            },
-            pageLength: 20,
-            responsive: true
-        });
-    });
-</script>
-
-
 
 
 {% endblock %}

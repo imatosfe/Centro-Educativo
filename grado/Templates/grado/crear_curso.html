@@ -1,0 +1,73 @@
+{% extends "pagina_principal/inicio2.html" %}
+
+{% block contenido %}
+    <title>Agregar Curso</title>
+    {% load crispy_forms_tags %}
+  
+
+<div class="container">
+    <h1>{% if form.instance.pk %}Editar{% else %}Agregar{% endif %} Curso</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.nombre|as_crispy_field }}  <!-- Campo para el nombre del curso -->
+            </div> <div class="form-group col-md-6">
+                {{ form.aula|as_crispy_field }}  <!-- Campo para el nombre del curso -->
+            </div>
+        
+        </div>
+     
+        <button type="submit" class="btn btn-primary">Crear Curso</button>
+    </form>
+    <p class="text-center mt-3"><a href="{% url 'lista_cursos' %}">Volver a la lista de cursos</a></p>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    
+<script>
+    // Obtenemos el primer mensaje de Django (si lo hay)
+    {% if messages %}
+        {% for message in messages %}
+            let icono = '';
+
+            // Determinamos el icono según el tipo de mensaje
+            switch ("{{ message.tags }}") {
+                case 'success':
+                    icono = 'success';
+                    break;
+                case 'error':
+                    icono = 'error';
+                    break;
+                case 'warning':
+                    icono = 'warning';
+                    break;
+                case 'info':
+                    icono = 'info';
+                    break;
+                default:
+                    icono = 'info'; // por defecto, mostramos un info
+            }
+
+            // Mostramos el toast con SweetAlert2
+            Swal.fire({
+                toast: true,
+                icon: icono,
+                title: "{{ message }}", // El contenido del mensaje
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+
+{% endblock %}
+
+

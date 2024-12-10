@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Curso</title>
+</head>
+<body>
+    <h1>Detalle del Curso: {{ curso.nombre }}</h1>
+    <p><strong>Profesor:</strong> {{ curso.profesor.nombre }} {{ curso.profesor.apellido }}</p>
+    <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+    <p><strong>Fecha de Creación:</strong> {{ curso.fecha_creacion }}</p>
+    <a href="{% url 'editar_curso' curso.id %}">Editar</a> |
+    <a href="{% url 'lista_cursos' %}">Volver a la lista</a>
+</body>
+</html>

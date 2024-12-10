@@ -1,0 +1,16 @@
+# secciones/forms.py
+from django import forms
+# from estudiantes.models import Estudiante
+from .models import Secciones
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+
+class SeccionForm(forms.ModelForm):
+    
+
+     class Meta:
+        model = Secciones  # Asegúrate de que este es tu modelo
+        fields = ['nombre', 'grado']  # Otros campos que necesites
+ 
+
+
+

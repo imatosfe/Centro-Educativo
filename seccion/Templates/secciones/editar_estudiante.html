@@ -1,0 +1,64 @@
+{% extends "principal/inicio2.html" %}
+
+{% block contenido %}
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Estudiante</title>
+
+</head>
+<body>
+    <h1>Editar Nota de {{ seccion_estudiante.estudiante.nombre }}</h1>
+    <form method="POST" id="editarNotaForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nota">Nota:</label>
+            <input type="number" id="nota" name="nota" value="{{ seccion_estudiante.nota }}" required>
+        </div>
+        <button type="submit">Guardar</button>
+    </form>
+
+    <script>
+        document.getElementById('editarNotaForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    
+            const formData = new FormData(this);
+            fetch("{% url 'editar_estudiante_en_seccion' seccion.id seccion_estudiante.estudiante.id %}", {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      // Usar SweetAlert para mostrar éxito
+                      Swal.fire({
+                          title: 'Éxito',
+                          text: `Nota de ${data.nombre} actualizada a ${data.nota}`,
+                          icon: 'success',
+                          confirmButtonText: 'OK'
+                      }).then(() => {
+                          window.location.href = "{% url 'gestionar_seccion' seccion.id %}"; // Redirigir a gestionar_seccion
+                      });
+                  } else {
+                      // Usar SweetAlert para mostrar error
+                      Swal.fire({
+                          title: 'Error',
+                          text: data.error || "Error al actualizar la nota.",
+                          icon: 'error',
+                          confirmButtonText: 'OK'
+                      });
+                  }
+              }).catch(error => {
+                  console.error('Error:', error);
+                  // SweetAlert para mostrar error en caso de falla en la solicitud
+                  Swal.fire({
+                      title: 'Error',
+                      text: "Se produjo un error al actualizar la nota.",
+                      icon: 'error',
+                      confirmButtonText: 'OK'
+                  });
+              });
+        };
+    </script>
+    
+</body>
+
+{% endblock %}

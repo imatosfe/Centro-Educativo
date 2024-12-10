@@ -33,8 +33,12 @@ path('estudiantes/', include('estudiante.urls')),
     path('aulas/', include('aula.urls')),
     path('profesores/', include('profesor.urls')),   # Asegúrate que el nombre sea correcto
     path('usuarios/', include('usuarios_app.urls')), # Asegúrate que el nombre sea
+     path('grados/', include('grado.urls')), # Asegúrate que el nombre sea
+      path('secciones/', include('seccion.urls')), # Asegúrate que el nombre sea
    
-    
+     path('asignatura/', include('asignatura.urls')), # Asegúrate que el nombre sea
+     
+   
 
 
 

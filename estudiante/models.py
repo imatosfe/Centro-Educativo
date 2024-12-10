@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-from seccion.models import Seccion
+from seccion.models import Secciones
 
 
 class Estudiante(models.Model):
@@ -77,7 +77,7 @@ class Estudiante(models.Model):
   
     anio_escolar = models.CharField(max_length=10)  # Ej: 2024-2025
 
-    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='estudiantes', blank=True, null=True)
+    seccion = models.ForeignKey(Secciones, on_delete=models.CASCADE, related_name='estudiantes', blank=True, null=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

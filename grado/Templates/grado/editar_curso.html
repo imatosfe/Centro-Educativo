@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Curso</title>
+</head>
+<body>
+    <h1>Editar Curso: {{ curso.nombre }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    <p><a href="{% url 'lista_cursos' %}">Volver a la lista de cursos</a></p>
+</body>
+<script>
+    // Obtenemos el primer mensaje de Django (si lo hay)
+    {% if messages %}
+        {% for message in messages %}
+            let icono = '';
+
+            // Determinamos el icono según el tipo de mensaje
+            switch ("{{ message.tags }}") {
+                case 'success':
+                    icono = 'success';
+                    break;
+                case 'error':
+                    icono = 'error';
+                    break;
+                case 'warning':
+                    icono = 'warning';
+                    break;
+                case 'info':
+                    icono = 'info';
+                    break;
+                default:
+                    icono = 'info'; // por defecto, mostramos un info
+            }
+
+            // Mostramos el toast con SweetAlert2
+            Swal.fire({
+                toast: true,
+                icon: icono,
+                title: "{{ message }}", // El contenido del mensaje
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+</html>

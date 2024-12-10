@@ -1,0 +1,249 @@
+{% extends "principal/inicio2.html" %}
+{% load static %}
+
+{% block contenido %}
+
+
+<head>
+ 
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<div class="text-right">
+
+    <button type="button" class="btn btn-primary  mt-2 mt-sm-0 btn-icon-text " data-toggle="modal" data-target="#myModal">
+        <i class="mdi mdi-plus-circle"></i>   Agregar Estudiantes
+    </button>
+    
+    <a  href="{% url 'lista_secciones' %}"  type="button" class="btn btn-outline-primary  bg-white  " >
+        <i class="mdi mdi-undo"></i>  Volver
+    </a>
+    
+   
+</div>
+<h2>Gestionar Sección: {{ seccion.nombre }}</h2>
+
+<!-- Botón para abrir el modal -->
+
+
+
+
+<!-- Archivo inicio.html -->
+
+
+<hr>
+
+<!-- Tabla de estudiantes agregados -->
+<h3>Estudiantes en esta sección</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Nota</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for seccion_estudiante in seccion_estudiantes %}
+        <tr>
+            <td>{{ seccion_estudiante.estudiante.nombre }}</td>
+            <td>{{ seccion_estudiante.nota }}</td>
+            <td>
+                <a class="btn btn-secondary" href="{% url 'editar_estudiante_en_seccion' seccion.id seccion_estudiante.estudiante.id %}">Editar</a> |
+                <form action="{% url 'eliminar_estudiante' seccion.id seccion_estudiante.estudiante.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar a este estudiante de la sección?');">Eliminar</button>
+                </form>
+             
+            </td>
+            
+       
+         
+         
+        </tr>
+        {% endfor %}
+
+
+      <!-- Modal -->
+
+
+    </tbody>
+</table>
+
+
+
+
+<!-- Modal para Agregar Estudiantes -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Agregar Estudiante</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- Agregado botón de cerrar -->
+            </div>
+            <div class="modal-body">
+                <p>Selecciona un estudiante para agregar a la sección:</p>
+                <table id="estudiantesTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estudiante in estudiantes %}
+                        <tr data-id="{{ estudiante.id }}" data-nombre="{{ estudiante.nombre }} {{ estudiante.apellido }}">
+                            <td>{{ estudiante.nombre }} {{ estudiante.apellido }}</td>
+                            <td>{{ estudiante.id }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">No hay estudiantes disponibles.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function() {
+        // Formatear todos los elementos con clase 'monto'
+        $('.monto').each(function() {
+            let valor = parseFloat($(this).text()).toLocaleString('es-DO', { style: 'currency', currency: 'DOP' });
+            $(this).text(valor);
+        });
+
+        // Inicializar DataTables
+        $('#estudiantesTable').DataTable({
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros en total)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            pageLength: 20,
+            responsive: true
+        });
+
+        const tablaEstudiantes = document.getElementById('estudiantesTable'); // Corregido el ID aquí
+
+        tablaEstudiantes.addEventListener('dblclick', function (event) {
+            const fila = event.target.closest('tr');
+            if (fila) {
+                const estudianteId = fila.getAttribute('data-id');
+                const estudianteNombre = fila.getAttribute('data-nombre');
+
+                // Llamada al servidor para agregar el estudiante a la sección
+                fetch("{% url 'gestionar_seccion' seccion.id %}", {  // Cambia la URL a gestionar_seccion
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ estudiante_id: estudianteId }) // No necesitas enviar seccion_id, ya está en la URL
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          // SweetAlert para mostrar éxito
+                          Swal.fire({
+                              title: 'Estudiante agregado',
+                              text: `Estudiante ${estudianteNombre} agregado correctamente`,
+                              icon: 'success',
+                              confirmButtonText: 'OK'
+                          }).then(() => {
+                              // Recargar la página después de mostrar la alerta
+                              window.location.reload();
+                          });
+
+                          // Agregar el estudiante a la tabla de estudiantes en la sección
+                          const tbody = document.querySelector('table.table-striped tbody');
+                          const newRow = document.createElement('tr');
+                          newRow.innerHTML = `
+                              <td>${estudianteNombre}</td>
+                              <td>${data.nota || 'N/A'}</td>
+                          `;
+                          tbody.appendChild(newRow);
+                      } else {
+                          // SweetAlert para mostrar error si el estudiante ya está en la sección
+                          Swal.fire({
+                              title: 'Error',
+                              text: data.error || "Error al agregar estudiante.",
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                          });
+                      }
+                  }).catch(error => {
+                      console.error('Error:', error);
+                      // SweetAlert para mostrar error en caso de falla en la solicitud
+                      Swal.fire({
+                          title: 'Error',
+                          text: "Se produjo un error al agregar el estudiante.",
+                          icon: 'error',
+                          confirmButtonText: 'OK'
+                      });
+                  });
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    // Obtenemos el primer mensaje de Django (si lo hay)
+    {% if messages %}
+        {% for message in messages %}
+            let icono = '';
+
+            // Determinamos el icono según el tipo de mensaje
+            switch ("{{ message.tags }}") {
+                case 'success':
+                    icono = 'success';
+                    break;
+                case 'error':
+                    icono = 'error';
+                    break;
+                case 'warning':
+                    icono = 'warning';
+                    break;
+                case 'info':
+                    icono = 'info';
+                    break;
+                default:
+                    icono = 'info'; // por defecto, mostramos un info
+            }
+
+            // Mostramos el toast con SweetAlert2
+            Swal.fire({
+                toast: true,
+                icon: icono,
+                title: "{{ message }}", // El contenido del mensaje
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+
+{% endblock %}

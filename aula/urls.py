@@ -1,13 +1,14 @@
 from django.urls import path
 from .views import (
     # Importación de vistas ya creadas
-    AulaCreateView, AulaDeleteView, AulaDetailView, AulaListView, AulaUpdateView
+    AulaCreateView, AulaDeleteView, AulaDetailView, AulaListView, AulaUpdateView,  eliminar_aula
 )
 
 urlpatterns = [
-    path('aulas/', AulaListView.as_view(), name='aula-list'),
-    path('aulas/<int:pk>/', AulaDetailView.as_view(), name='aula-detail'),
-    path('aulas/create/', AulaCreateView.as_view(), name='aula-create'),
-    path('aulas/<int:pk>/update/', AulaUpdateView.as_view(), name='aula-update'),
-    path('aulas/<int:pk>/delete/', AulaDeleteView.as_view(), name='aula-delete'),
+    path('', AulaListView.as_view(), name='aula-list'),
+    path('<int:pk>/', AulaDetailView.as_view(), name='aula-detail'),
+    path('<int:pk>/editar/', AulaUpdateView.as_view(), name='aula-update'),
+    path('crear/', AulaCreateView.as_view(), name='aula-create'),
+    path('<int:pk>/eliminar/', AulaDeleteView.as_view(), name='aula-delete'),
+    path('eliminar/<int:aula_id>/', eliminar_aula, name='eliminar-aula'),
 ]

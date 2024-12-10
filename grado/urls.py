@@ -1,17 +1,15 @@
+
+# cursos/urls.py
 from django.urls import path
-from .views import (
-    AulaListView, AulaDetailView, AulaCreateView, AulaUpdateView, AulaDeleteView,
-    GradoListView, GradoDetailView, GradoCreateView, GradoUpdateView, GradoDeleteView,
-    EstudianteListView, EstudianteDetailView, EstudianteCreateView, EstudianteUpdateView, EstudianteDeleteView,
-    CalificacionListView, CalificacionCreateView, ReporteCalificacionesPorEstudianteView
-)
+from . import views
+from .views import  eliminar_curso
 
 urlpatterns = [
+    path('', views.lista_cursos, name='lista_cursos'),            # Listar todos los cursos
+    path('crear/', views.crear_curso, name='crear_curso'),        # Crear un nuevo curso
+    path('detalle/<int:pk>/', views.detalle_curso, name='detalle_curso'), # Ver detalles de un curso específico
+path('editar/<int:curso_id>/update/', views.editar_curso, name='editar_curso'),
 
-    # Grados
-    path('grados/', GradoListView.as_view(), name='grado-list'),
-    path('grados/<int:pk>/', GradoDetailView.as_view(), name='grado-detail'),
-    path('grados/create/', GradoCreateView.as_view(), name='grado-create'),
-    path('grados/<int:pk>/update/', GradoUpdateView.as_view(), name='grado-update'),
-    path('grados/<int:pk>/delete/', GradoDeleteView.as_view(), name='grado-delete'),
+
+    path('eliminar/<int:pk>/delete/',eliminar_curso, name='eliminar_curso'),
 ]

@@ -1,17 +1,21 @@
+
 from django.urls import path
-from .views import (
-    # Importación de vistas ya creadas
-    SeccionListView, SeccionDetailView, SeccionCreateView, SeccionUpdateView, SeccionDeleteView,
-    ProfesorListView, ProfesorDetailView, ProfesorCreateView, ProfesorUpdateView, ProfesorDeleteView,
-    AsignaturaListView, AsignaturaDetailView, AsignaturaCreateView, AsignaturaUpdateView, AsignaturaDeleteView,
-)
+
+from asignatura import views
 
 urlpatterns = [
     
     # Asignaturas
-    path('asignaturas/', AsignaturaListView.as_view(), name='asignatura-list'),
-    path('asignaturas/<int:pk>/', AsignaturaDetailView.as_view(), name='asignatura-detail'),
-    path('asignaturas/create/', AsignaturaCreateView.as_view(), name='asignatura-create'),
-    path('asignaturas/<int:pk>/update/', AsignaturaUpdateView.as_view(), name='asignatura-update'),
-    path('asignaturas/<int:pk>/delete/', AsignaturaDeleteView.as_view(), name='asignatura-delete'),
+ #  path('', AsignaturaListView.as_view(), name='asignatura-list'),
+ #   path('asignaturas/<int:pk>/', AsignaturaDetailView.as_view(), name='asignatura-detail'),
+  #  path('asignaturas/create/', AsignaturaCreateView.as_view(), name='asignatura-create'),
+ #   path('asignaturas/<int:pk>/update/', AsignaturaUpdateView.as_view(), name='asignatura-update'),
+  #  path('asignaturas/<int:pk>/delete/', AsignaturaDeleteView.as_view(), name='asignatura-delete'),
+
+       
+       path('', views.lista_asignatura, name='asignatura-list'),
+       path('asignatura/eliminar/<int:asignatura_id>/', views.eliminar_asignatura, name='eliminar_asignatura'),
+       path('asignatura/crear', views.crear_asignatura, name='crear_asignatura'),
+
+ path('asignatura/editar/<int:asignatura_id>/', views.actualizar_asignatura, name='actualizar_asignatura'),
 ]
