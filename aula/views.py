@@ -15,6 +15,7 @@ from django.contrib import messages
 class AulaListView(ListView):
     model = Aula
     template_name = 'aula_list.html'
+    
     context_object_name = 'aulas'  # Para referenciarlo de forma más clara en la plantilla
 
       
@@ -89,3 +90,7 @@ def eliminar_aula(request, aula_id):
     
 
     return JsonResponse({'success': False, 'error': 'Método no permitido'})
+
+
+
+

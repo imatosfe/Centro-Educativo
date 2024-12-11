@@ -15,7 +15,7 @@ urlpatterns = [
        
        path('', views.lista_asignatura, name='asignatura-list'),
        path('asignatura/eliminar/<int:asignatura_id>/', views.eliminar_asignatura, name='eliminar_asignatura'),
-       path('asignatura/crear', views.crear_asignatura, name='crear_asignatura'),
+       path('crear', views.crear_asignatura, name='crear_asignatura'),
 
  path('asignatura/editar/<int:asignatura_id>/', views.actualizar_asignatura, name='actualizar_asignatura'),
 ]

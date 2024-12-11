@@ -136,6 +136,15 @@ rel="stylesheet">
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'asignatura-list' %}">  <i class="fas fa-columns menu-icon"></i>  Asiganturas</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'calificacion-list' %}">  <i class="fas fa-columns menu-icon"></i>  Calificaciones</a>
+              </li>
+              <li class="nav-item">
+             <!-- Este botón puede ir en cualquier template donde quieras ofrecer el acceso -->
+<a href="{% url 'listar_secciones' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">
+  <i class="mdi mdi-plus-circle"></i> Calificar Sección
+</a>
+</li>
             </ul>
           </div>
         </li>

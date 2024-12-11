@@ -12,4 +12,7 @@ path('editar/<int:curso_id>/update/', views.editar_curso, name='editar_curso'),
 
 
     path('eliminar/<int:pk>/delete/',eliminar_curso, name='eliminar_curso'),
+
+      path('secciones/<int:aula_id>/', views.secciones_por_aula, name='secciones_por_aula'),
+
 ]

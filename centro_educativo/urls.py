@@ -37,6 +37,7 @@ path('estudiantes/', include('estudiante.urls')),
       path('secciones/', include('seccion.urls')), # Asegúrate que el nombre sea
    
      path('asignatura/', include('asignatura.urls')), # Asegúrate que el nombre sea
+          path('calificaciones/', include('calificaion.urls')), # Asegúrate que el nombre sea
      
    
 

@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
 
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -69,3 +70,7 @@ def eliminar_estudiante(request, estudiante_id):
             return JsonResponse({'success': False, 'error': str(e)})
     
     return JsonResponse({'success': False, 'error': 'Método no permitido'})
+
+
+
+

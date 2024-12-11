@@ -13,7 +13,6 @@ from django.http import JsonResponse
 # Asignaturas
 def lista_asignatura(request):
     asign = Asignatura.objects.all()
-    print(asign)  # Esto imprimirá los datos en la consola
     return render(request, 'asignatura/asignatura_list.html', {'asignaturas': asign})
 
 
@@ -31,23 +30,20 @@ class AsignaturaCreateView(CreateView):
 
 def crear_asignatura(request):
     if request.method == 'POST':
-        form =  AsignaturaForm(request.POST)
+        form = AsignaturaForm(request.POST)
         if form.is_valid():
             nombre_curso = form.cleaned_data['nombre']
-            # Verificar si el curso ya existe
             if Asignatura.objects.filter(nombre=nombre_curso).exists():
                 messages.error(request, f'La Asignatura "{nombre_curso}" ya existe.')
             else:
                 form.save()
                 messages.success(request, 'Asignatura creada con éxito.')
-                return redirect('asignatura/asignatura_list')  # Asegúrate de que la URL sea correcta
+                return redirect('asignatura-list')  # Redirige a 'asignatura_list' correctamente
         else:
-            messages.error(request, 'Error al crear Asicnatura.')
+            messages.error(request, 'Error al crear Asignatura.')
     else:
         form = AsignaturaForm()
     return render(request, 'asignatura/asignatura_form.html', {'form': form})
-
-
 
 
 
@@ -79,7 +75,7 @@ def actualizar_asignatura(request, asignatura_id):
             messages.error(request, 'Error al actualizar la asignatura.')
     else:
         form = AsignaturaForm(instance=asignatura)
-    return render(request, 'asignatura_form.html', {'form': form})
+    return render(request, 'asignatura/asignatura_form.html', {'form': form})
 
 
 

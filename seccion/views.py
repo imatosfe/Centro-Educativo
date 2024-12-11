@@ -6,16 +6,20 @@ from django.contrib import messages
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
-
+from grado.models import Grado
 import json
 
+
+from django.shortcuts import render, get_object_or_404
+from estudiante.models import Estudiante
+from seccion.models import Secciones
 
 def lista_secciones(request):
     secciones = Secciones.objects.all()  # Obtén todas las secciones
     return render(request, 'lista_secciones.html', {
         'secciones': secciones,
     })
+
 
 def crear_seccion(request):
     if request.method == 'POST':
@@ -82,4 +86,20 @@ def eliminar_seccion(request, seccion_id):
 
 
 
+
+def estudiantes_por_seccion(request, seccion_id):
+    # Obtiene la sección por su ID
+    seccion = get_object_or_404(Secciones, id=seccion_id)
+    
+    # Obtiene todos los estudiantes que pertenecen a esa sección
+    estudiantes = Estudiante.objects.filter(seccion=seccion)
+    cursos = get_object_or_404(Grado, id=seccion_id)
+    grado = get_object_or_404(Grado, id=seccion_id) 
+    # Pasa los estudiantes y la sección a la plantilla
+    return render(request, 'estudiantes_por_seccion.html', {
+        'seccion': seccion,
+            'cursos': cursos,
+                'aula': grado.aula, 
+        'estudiantes': estudiantes
+    })
 

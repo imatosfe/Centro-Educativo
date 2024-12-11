@@ -11,4 +11,6 @@ urlpatterns = [
     path('crear/', AulaCreateView.as_view(), name='aula-create'),
     path('<int:pk>/eliminar/', AulaDeleteView.as_view(), name='aula-delete'),
     path('eliminar/<int:aula_id>/', eliminar_aula, name='eliminar-aula'),
+
+ 
 ]

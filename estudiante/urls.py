@@ -17,5 +17,7 @@ urlpatterns = [
         path('editar/<int:estudiante_id>/', editar_estudiante, name='editar_estudiante'),
     path('eliminar/<int:estudiante_id>/', eliminar_estudiante, name='eliminar_estudiante'),
 
+   
+ 
     # Agrega aquí las rutas para editar y eliminar estudiantes si es necesario
 ]

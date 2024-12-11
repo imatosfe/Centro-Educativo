@@ -1,0 +1,41 @@
+
+{% extends "pagina_principal/inicio2.html" %}
+
+
+{% block contenido %}
+    <h2>Crear Calificación</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="estudiante">Estudiante</label>
+            <select name="estudiante" class="form-control" id="estudiante">
+                {% for estudiante in form.estudiante.queryset %}
+                    <option value="{{ estudiante.id }}" {% if estudiante.id == form.estudiante.value %}selected{% endif %}>
+                        {{ estudiante }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="asignatura">Asignatura</label>
+            <select name="asignatura" class="form-control" id="asignatura">
+                {% for asignatura in form.asignatura.queryset %}
+                    <option value="{{ asignatura.id }}" {% if asignatura.id == form.asignatura.value %}selected{% endif %}>
+                        {{ asignatura }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="nota">Nota</label>
+            <input type="number" name="nota" class="form-control" id="nota" value="{{ form.nota.value }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar Calificación</button>
+    </form>
+
+{% endblock %}

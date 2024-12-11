@@ -10,5 +10,8 @@ urlpatterns = [
       
     path('eliminar-seccion/<int:seccion_id>/',eliminar_seccion, name='eliminar_seccion'),
 
+  
+    path('seccion/<int:seccion_id>/', views.estudiantes_por_seccion, name='estudiantes_por_seccion'),
+
 ]   
 

@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 # cursos/views.py
 from django.shortcuts import render, get_object_or_404, redirect
+
+from aula.models import Aula
 from .models import Grado
 from .forms import CursoForm
 from django.contrib import messages
@@ -75,3 +77,24 @@ def eliminar_curso(request, curso_id):
             return JsonResponse({'success': False, 'error': str(e)})
     
     return JsonResponse({'success': False, 'error': 'Método no permitido'})
+
+
+
+
+from django.shortcuts import render, get_object_or_404
+from grado.models import Grado  # Asegúrate de importar Grado
+from seccion.models import Secciones  # Asegúrate de importar Secciones
+
+def secciones_por_aula(request, aula_id):
+    # Obtener el aula (relacionada con grado)
+    grado = get_object_or_404(Grado, aula__id=aula_id)  # Filtramos por aula.id
+
+    # Obtener las secciones asociadas a este grado
+    secciones = Secciones.objects.filter(grado=grado)
+    cursos = get_object_or_404(Grado, id=aula_id)
+    return render(request, 'grado/secciones_por_aula.html', {
+        'aula': grado.aula,  # Pasamos el aula asociada
+        'cursos': cursos,
+        'secciones': secciones,
+    })
+

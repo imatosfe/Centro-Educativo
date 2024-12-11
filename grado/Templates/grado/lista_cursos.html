@@ -15,15 +15,15 @@
     <a href="{% url 'crear_curso' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">  <i class="mdi mdi-plus-circle"></i> Agregar Nuevo Curso</a>
 </div>
 
-<h1>Lista de Cursos</h1>
+<h1>Lista de Grado</h1>
 
 <div class="formulario-hijo">
 <table id="cursosTable" class="display" style="width:100%">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Profesor</th>
-            <th>Descripción</th>
+            <th>Grado</th>
+            <th>Aula</th>
+           
             <th>Acciones</th>
         </tr>
     </thead>
@@ -34,7 +34,9 @@
                 <td>{{ curso.aula.nombre}} </td>
              
                 <td>
-             
+                    <a href="{% url 'secciones_por_aula' curso.id %}" class="btn btn-primary">
+                        Ver Secciones
+                    </a>
                     <a class="btn btn-secondary btn-sm"  href="{% url 'editar_curso' curso.id %}">  <i class="mdi mdi-pencil"></i>  Editar</a> |
                    
                     <button class="btn btn-danger btn-sm" onclick="confirmarEliminar({{ curso.id }})">
