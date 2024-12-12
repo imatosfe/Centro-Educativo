@@ -44,6 +44,7 @@ INSTALLED_APPS = [
            'estudiante',
             'grado',
              'pagina_principal',
+               'facturaciones',
              'profesor',
              'seccion',
               'usuarios_app',

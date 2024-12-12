@@ -34,6 +34,7 @@
         <thead>
             <tr>
                 <th>Estudiante</th>
+                <th>Promedio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -41,6 +42,7 @@
             {% for estudiante in estudiantes %}
                 <tr>
                     <td>{{ estudiante.nombre }} {{ estudiante.apellido }}</td>
+                    <td>{{ estudiante.promedio }}</td>  
                     <td>
                         <a href="{% url 'agregar_calificacion' seccion.id estudiante.id %}" class="btn btn-secondary">Asignaturas</a>
                     </td>
