@@ -46,8 +46,10 @@ INSTALLED_APPS = [
              'pagina_principal',
                'facturaciones',
              'profesor',
+                    'tarifas',
              'seccion',
               'usuarios_app',
+                   'notificaciones',
               'crispy_forms',
               'bootstrap_datepicker_plus',
     "crispy_bootstrap5",
@@ -81,6 +83,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+              
+
+           
             ],
         },
     },
@@ -153,3 +158,8 @@ LOGOUT_REDIRECT_URL = reverse_lazy('login')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+
+# settings.py
+

@@ -42,6 +42,7 @@ path('estudiantes/', include('estudiante.urls')),
    
 
  path('facturacion/', include('facturaciones.urls')),
+  path('notificaciones/', include('notificaciones.urls')),
 
 
     path('accounts/login',Login.as_view(), name = 'login'),

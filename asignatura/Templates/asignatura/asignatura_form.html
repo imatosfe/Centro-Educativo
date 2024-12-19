@@ -1,30 +1,38 @@
 {% extends "pagina_principal/inicio2.html" %}
 
 {% block contenido %}
-    <title>Agregar Asigatura</title>
+    <title>Agregar Asignatura</title>
     {% load crispy_forms_tags %}
-  
 
-<div class="container">
-    <h1>{% if object %}Editar Asignatura{% else %}Crear Asignatura{% endif %}</h1> <form method="post">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.nombre|as_crispy_field }}  <!-- Campo para el nombre del curso -->
+    <div class="container">
+        <h1>{% if object %}Editar Asignatura{% else %}Crear Asignatura{% endif %}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.nombre|as_crispy_field }} <!-- Campo para el nombre del curso -->
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.profesor|as_crispy_field }} <!-- Campo para el profesor -->
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.grado|as_crispy_field }} <!-- Campo para el grado -->
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                {{ form.profesor|as_crispy_field }}  <!-- Campo para el nombre del curso -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.fecha_inicio|as_crispy_field }} <!-- Campo para la fecha de inicio -->
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.fecha_termino|as_crispy_field }} <!-- Campo para la fecha de término -->
+                </div>
             </div>
-                  <div class="form-group col-md-6">
-                {{ form.grado|as_crispy_field }}  <!-- Campo para el nombre del curso -->
-            </div>
-        </div>
-     
-        <button type="submit" class="btn btn-primary">Crear Asignatura</button>
-    </form>
-    <p class="text-center mt-3"><a href="{% url 'lista_cursos' %}">Volver a la lista de Asignatura</a></p>
-</div>
-
+            <button type="submit" class="btn btn-primary">Crear Asignatura</button>
+        </form>
+        <p class="text-center mt-3">
+            <a href="{% url 'lista_cursos' %}">Volver a la lista de Asignatura</a>
+        </p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

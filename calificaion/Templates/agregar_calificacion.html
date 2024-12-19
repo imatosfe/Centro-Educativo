@@ -11,6 +11,7 @@
 {% extends "pagina_principal/inicio2.html" %}
 
 {% block contenido %}
+{% load custom_filters %}
 
 
     
@@ -41,13 +42,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% for asignatura in asignaturas %}
-                    <tr>
-                        <td>{{ asignatura.nombre }}</td>
-                        <td>
-                            <input type="number" name="nota_{{ asignatura.id }}" step="0.01" class="form-control" placeholder="Calificación" required>
-                        </td>
-                    </tr>
+              
+                {% for field in form %}
+                    {% if "nota_" in field.name %}
+                        <tr>
+                          
+                            <td>
+                                <!-- Extraer el nombre de la asignatura de la etiqueta -->
+                                {{ field.label }}
+                            </td>
+                            <td>
+                                {{ field }}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
@@ -55,6 +63,11 @@
     </form>
     
 </div>
+
+
+
+
+
 <script>
     $(document).ready(function() {
         $('#cursosTable').DataTable({

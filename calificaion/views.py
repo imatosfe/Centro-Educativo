@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from asignatura import models
 from .models import    Estudiante,  Asignatura, Calificacion
 from grado.models import Grado
 from seccion.models import Secciones
@@ -111,27 +113,123 @@ def listar_estudiantes_calificacion(request, seccion_id):
     })
 
 def agregar_calificacion(request, seccion_id, estudiante_id):
-    seccion = get_object_or_404(Secciones, id=seccion_id)
-    estudiante = get_object_or_404(Estudiante, id=estudiante_id)
-    asignaturas = obtener_asignaturas_por_grado(seccion.grado)
+    # Obtener la sección y el estudiante
+    seccion = get_object_or_404(Secciones, pk=seccion_id)
+    estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
+    
+    # Obtener las asignaturas relacionadas con el grado de la sección
+    asignaturas = Asignatura.objects.filter(grado=seccion.grado)
+    grado = seccion.grado  # Esto nos da el grado de la sección
 
-    if request.method == 'POST':
-        form = CalificacionForm(request.POST)
+        # Obtener el aula asociado al grado
+    aula = grado.aula 
+    # Preparar datos iniciales si hay calificaciones existentes
+    initial_data = {}
+    if request.method == 'GET':
+        for asignatura in asignaturas:
+            try:
+                calificacion = Calificacion.objects.get(estudiante=estudiante, asignatura=asignatura)
+                initial_data[f'nota_{asignatura.id}'] = calificacion.nota
+            except Calificacion.DoesNotExist:
+                initial_data[f'nota_{asignatura.id}'] = None
+
+        form = CalificacionForm(seccion=seccion, initial=initial_data)
+
+    elif request.method == 'POST':
+        form = CalificacionForm(request.POST, seccion=seccion)
         if form.is_valid():
-            for asignatura_id, nota in form.cleaned_data.items():
-                if asignatura_id.startswith('nota_'):
-                    asignatura_id = int(asignatura_id[5:])
-                    asignatura = get_object_or_404(Asignatura, id=asignatura_id)
-                    # Validación y guardado de la calificación (como se mostró antes)
-            return redirect('listar_estudiantes_calificacion', seccion_id=seccion.id)
-    else:
-        form = CalificacionForm()
+            # Guardar las calificaciones
+            for asignatura in asignaturas:
+                nota = form.cleaned_data.get(f'nota_{asignatura.id}')
+                if nota is not None:
+                    # Crear o actualizar la calificación
+                    calificacion, created = Calificacion.objects.update_or_create(
+                        estudiante=estudiante,
+                        asignatura=asignatura,
+                     grado=grado,
+                        defaults={'nota': nota}
+                    )
+            # Redirigir después de guardar todas las calificaciones
+            return redirect('listar_estudiantes_calificacion', seccion_id=seccion_id)
 
+    # Renderizar el formulario en GET o si hay errores en el POST
     return render(request, 'agregar_calificacion.html', {
-        'seccion': seccion,
-        'estudiante': estudiante,
-        'asignaturas': asignaturas,
         'form': form,
+        'asignaturas': asignaturas,
+        'estudiante': estudiante,
+        'seccion': seccion,
     })
 
+
+
+def get_calificaciones(estudiante, asignaturas):
+    """Obtiene las calificaciones de un estudiante para las asignaturas dadas."""
+    calificaciones = {}
+    for asignatura in asignaturas:
+        try:
+            calificacion = Calificacion.objects.get(estudiante=estudiante, asignatura=asignatura)
+            calificaciones[f'nota_{asignatura.id}'] = calificacion.nota
+        except Calificacion.DoesNotExist:
+            calificaciones[f'nota_{asignatura.id}'] = None  # Si no tiene calificación, lo dejamos en blanco
+    print("Calificaciones obtenidas:", calificaciones)  # Esto te ayudará a verificar
+    return calificaciones
+
+
+
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Estudiante, Grado
+
+def promocionar_estudiante(request, estudiante_id, nuevo_grado_id):
+    estudiante = get_object_or_404(Estudiante, id=estudiante_id)
+    nuevo_grado = get_object_or_404(Grado, id=nuevo_grado_id)
+
+    if estudiante.grado_actual == nuevo_grado:
+        messages.warning(request, "El estudiante ya está en este grado.")
+    else:
+        estudiante.grado_actual = nuevo_grado
+        estudiante.save()
+        messages.success(request, f"El estudiante {estudiante.nombre} fue promovido a {nuevo_grado.nombre}.")
+    
+    return redirect('listar_estudiantes')  # Ajusta la redirección según tu sistema
+
+
+from django.shortcuts import render
+from .models import Estudiante, Calificacion
+from django.db.models import Avg
+
+
+from django.db.models import Avg
+from django.shortcuts import render, get_object_or_404
+from .models import Estudiante, Calificacion
+
+def calificaciones_por_grado(request, estudiante_id):
+    # Obtener al estudiante por su ID
+    estudiante = get_object_or_404(Estudiante, id=estudiante_id)
+
+    # Obtener las calificaciones del estudiante
+    calificaciones = Calificacion.objects.filter(estudiante=estudiante).order_by('grado', 'asignatura')
+
+    # Obtener el grado del estudiante
+    grado = estudiante.seccion.grado 
+
+    # Crear un diccionario para almacenar los promedios por grado
+    promedios_por_grado = {}
+
+    # Filtrar calificaciones por grado
+    calificaciones_grado = calificaciones.filter(grado=grado)
+
+    # Calcular el promedio de calificaciones por grado
+    promedio = calificaciones_grado.aggregate(promedio=Avg('nota'))['promedio']
+
+    # Almacenar el promedio por grado en el diccionario
+    promedios_por_grado[grado] = promedio
+
+    # Retornar la respuesta renderizada
+    return render(request, 'calificaciones_por_grado.html', {
+        'estudiante': estudiante,
+        'calificaciones': calificaciones,
+        'promedios_por_grado': promedios_por_grado,
+    })
 

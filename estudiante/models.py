@@ -3,6 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
+
 from seccion.models import Secciones
 
 
@@ -78,12 +79,36 @@ class Estudiante(models.Model):
     anio_escolar = models.CharField(max_length=10)  # Ej: 2024-2025
 
     seccion = models.ForeignKey(Secciones, on_delete=models.CASCADE, related_name='estudiantes', blank=True, null=True)
+    tarifa_personalizada = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0)],
+        blank=True, 
+        null=True
+    )
 
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+    def obtener_precio_anual(self):
+        return self.tarifa_personalizada or self.seccion.grado.tarifa_escolar.precio_anual
+
+    def obtener_precio_mensual(self):
+        return self.obtener_precio_anual() / 12
+    
+    
     # Métodos especiales
     def __str__(self):
         return f"{self.nombre} {self.apellido} - {self.matricula}"
+    
+    def obtener_calificaciones_por_grado(self, grado):
+        return self.calificaciones.filter(grado=grado)
+    
+
+
+    def calcular_promedio_por_grado(self, grado):
+        calificaciones = self.obtener_calificaciones_por_grado(grado)
+        if not calificaciones.exists():
+            return None
+        return calificaciones.aggregate(promedio=models.Avg('nota'))['promedio']
+  
 
     class Meta:
         ordering = ['apellido', 'nombre']

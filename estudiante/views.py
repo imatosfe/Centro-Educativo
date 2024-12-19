@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from notificaciones.models import Notificacion
 from .forms import EstudianteForm
 from .models import Estudiante
 from django.contrib.auth.decorators import login_required
@@ -30,8 +32,31 @@ def crear_estudiante(request):
 
 # @login_required
 def lista_estudiantes(request):
+
+    notificaciones = Notificacion.objects.all().order_by('-fecha_creacion')
+    from django.core.paginator import Paginator
+    paginator = Paginator(notificaciones, 10)  # 10 notificaciones por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     estudiantes = Estudiante.objects.all()
-    return render(request, 'lista_estudiantes.html', {'estudiantesss': estudiantes})
+    return render(request, 'lista_estudiantes.html', {'estudiantesss': estudiantes,  'notificaciones': page_obj })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # @login_required
 def editar_estudiante(request, estudiante_id):

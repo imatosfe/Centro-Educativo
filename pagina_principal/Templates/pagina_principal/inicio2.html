@@ -136,15 +136,24 @@ rel="stylesheet">
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'asignatura-list' %}">  <i class="fas fa-columns menu-icon"></i>  Asiganturas</a>
               </li>
+
+
+
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'calificacion-list' %}">  <i class="fas fa-columns menu-icon"></i>  Calificaciones</a>
               </li>
-              <li class="nav-item">
-             <!-- Este botón puede ir en cualquier template donde quieras ofrecer el acceso -->
-<a href="{% url 'listar_secciones' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">
-  <i class="mdi mdi-plus-circle"></i> Calificar Sección
-</a>
-</li>
+                          <li class="nav-item">
+                        <!-- Este botón puede ir en cualquier template donde quieras ofrecer el acceso -->
+            <a href="{% url 'listar_secciones' %}" class="btn btn-primary mt-2 mt-sm-0 btn-icon-text">
+              <i class="mdi mdi-plus-circle"></i> Calificar Sección
+            </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listar_notificaciones' %}">  <i class="fas fa-columns menu-icon"></i>  Notificaciones</a>
+            </li>
+
+
             </ul>
           </div>
         </li>
@@ -159,7 +168,7 @@ rel="stylesheet">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
           
-                  <a  class="nav-link"  href=""><i class="fas fa-money-check-alt menu-icon "></i> Cuenta por Cobrar</a>
+                  <a  class="nav-link"  href="{% url 'lista_facturas_pendientes' %}"><i class="fas fa-money-check-alt menu-icon "></i> Facturas pendientes</a>
                 </li>
                 <li class="nav-item"><a  class="nav-link" href=""><i class="fas fa-tags  menu-icon "></i> Listar Tarifas</a></li>
              <li class="nav-item" ><a  class="nav-link" href=""><i class="fas fa-file-invoice  menu-icon  "></i> Listar Factura</a></li>
@@ -230,38 +239,45 @@ rel="stylesheet">
 
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown ml-3">
-                    <a class="nav-link" id="notificationDropdown" href="#" data-toggle="dropdown">
-                        <i class="mdi mdi-bell-outline mdi-36px"></i>
-                        {% if conteo_notificaciones > 0 %}
-                            <span class="badge badge-pill badge-danger">{{ conteo_notificaciones }}</span>
-                        {% endif %}
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                        <h6 class="px-3 py-3 font-weight-semibold mb-0">Notifications</h6>
-                        <div class="dropdown-divider"></div>
-                        {% for notificacion in notificaciones %}
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-success">
-                                        <i class="mdi mdi-calendar"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="preview-subject font-weight-normal mb-0">{{ notificacion.mensaje }}</h6>
-                                    <p class="text-gray ellipsis mb-0"> {{ notificacion.fecha_envio|date:"H:i A" }} </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                        {% endfor %}
-                        <h6 class="p-3 font-13 mb-0 text-primary text-center">View all notifications</h6>
-                    </div>
-                    
-                </li>
+           <!-- Dropdown de notificaciones en pagina_principal.html -->
 
-                
-            </ul>
+<!-- Si quieres mostrar las notificaciones generadas -->
+
+<ul class="navbar-nav">
+  <li class="nav-item dropdown ml-3">
+      <a class="nav-link" id="notificationDropdown" href="#" data-toggle="dropdown">
+          <i class="mdi mdi-bell-outline mdi-36px"></i>
+        
+        
+          {% if conteo_notificaciones > 0 %}
+              <span class="badge badge-pill badge-danger">{{ conteo_notificaciones }}</span>
+          {% endif %}
+      </a>
+ 
+    
+      <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+          <h6 class="px-3 py-3 font-weight-semibold mb-0">Notifications</h6>
+          <div class="dropdown-divider"></div>
+          {% for notificacion in   notificaciones %}
+              <a class="dropdown-item preview-item" href="{% url 'marcar_como_leida' notificacion.id %}">
+                  <div class="preview-thumbnail">
+                      <div class="preview-icon bg-success">
+                          <i class="mdi mdi-calendar"></i>
+                      </div>
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="preview-subject font-weight-normal mb-0">{{ notificacion.mensaje }}</h6>
+                      <p class="text-gray ellipsis mb-0">{{ notificacion.fecha_creacion|date:"H:i A" }}</p>
+                  </div>
+              </a>
+              <div class="dropdown-divider"></div>
+           
+          {% endfor %}
+          <h6 class="p-3 font-13 mb-0 text-primary text-center"  href="{% url 'listar_notificaciones' %}"> View all notifications</h6>
+      </div>
+  </li>
+</ul>
+
             <!-- Aquí colocamos el logout a la derecha -->
     <!-- Aumentar el tamaño usando clases mdi -->
 <ul class="navbar-nav ml-auto">
@@ -315,6 +331,8 @@ rel="stylesheet">
                                   <p>Brindamos apoyo y herramientas para el bienestar emocional.</p>
                                   <p>¡Juntos podemos lograr un cambio positivo!</p>
                                   <button class="cta-button">¡Contáctanos!</button>
+                                  
+                                  
                               </div>
                                 
                                 <div class="carrusel">
@@ -416,6 +434,7 @@ rel="stylesheet">
     });
 </script>
 <script>
+
   // Obtenemos el primer mensaje de Django (si lo hay)
   {% if messages %}
       {% for message in messages %}

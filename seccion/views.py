@@ -84,10 +84,42 @@ def eliminar_seccion(request, seccion_id):
 
 
 
-
-
+from django.contrib import messages
 
 def estudiantes_por_seccion(request, seccion_id):
+    # Obtiene la sección por su ID
+    seccion = get_object_or_404(Secciones, id=seccion_id)
+
+    # Obtiene todos los estudiantes que pertenecen a esa sección
+    estudiantes = Estudiante.objects.filter(seccion=seccion)
+
+    # Verifica si hay estudiantes en la sección
+    if not estudiantes.exists():
+        messages.warning(request, 'No hay estudiantes asignados a esta sección.')
+
+    # Obtiene el grado relacionado con la sección
+    grado = getattr(seccion, 'grado', None)  # Obtiene el grado si existe, o None
+
+    # Verifica si la sección tiene un grado asociado
+    if not grado:
+        messages.warning(request, 'Esta sección no tiene un grado asignado.')
+
+    # Verifica si el grado tiene un aula asignada
+    aula = getattr(grado, 'aula', None) if grado else None
+    if not aula:
+        messages.warning(request, 'El grado asociado a esta sección no tiene un aula definida.')
+
+    # Pasa los datos a la plantilla
+    return render(request, 'estudiantes_por_seccion.html', {
+        'seccion': seccion,
+        'cursos': grado,
+        'aula': aula,
+        'estudiantes': estudiantes,
+    })
+
+
+
+def estudiantes_por_seccion1(request, seccion_id):
     # Obtiene la sección por su ID
     seccion = get_object_or_404(Secciones, id=seccion_id)
     

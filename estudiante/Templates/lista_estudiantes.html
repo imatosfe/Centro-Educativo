@@ -42,6 +42,8 @@
                 <td>{{ estudiante.fecha_nacimiento }}</td>
                 <td>{{ estudiante.promedio }}</td>
                 <td>
+                    <a href="{% url 'calificaciones_por_grado' estudiante_id=estudiante.id %}">Ver calificaciones por grado</a>
+
                     <a class="btn btn-secondary btn-sm" href="{% url 'editar_estudiante' estudiante.id %}"> <i class="mdi mdi-pencil"></i> Editar</a>
                     <a class="btn btn-danger btn-sm" href="#" onclick="confirmarEliminar({{ estudiante.id }})">   <i class="mdi mdi-trash-can"></i>  Eliminar</a>
              

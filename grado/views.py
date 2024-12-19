@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -85,16 +85,17 @@ from django.shortcuts import render, get_object_or_404
 from grado.models import Grado  # Asegúrate de importar Grado
 from seccion.models import Secciones  # Asegúrate de importar Secciones
 
+
+
 def secciones_por_aula(request, aula_id):
-    # Obtener el aula (relacionada con grado)
-    grado = get_object_or_404(Grado, aula__id=aula_id)  # Filtramos por aula.id
-
+    # Obtener el grado
+    grado = get_object_or_404(Grado, id=aula_id)
+    
     # Obtener las secciones asociadas a este grado
-    secciones = Secciones.objects.filter(grado=grado)
-    cursos = get_object_or_404(Grado, id=aula_id)
+    seccio = Secciones.objects.filter(grado=grado)
+    
     return render(request, 'grado/secciones_por_aula.html', {
-        'aula': grado.aula,  # Pasamos el aula asociada
-        'cursos': cursos,
-        'secciones': secciones,
+        'grado': grado,
+        'secciones': seccio,
+          'aula': grado.aula, 
     })
-

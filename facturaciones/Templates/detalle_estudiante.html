@@ -1,0 +1,160 @@
+{% extends "pagina_principal/inicio2.html" %}
+
+{% block contenido %}
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Estudiante</title>
+</head>
+
+    
+<div class="formulario-hijo">
+
+    <h1>Detalle del Estudiante</h1>
+    <p><strong>Nombre:</strong> {{ estudiante.nombre }}</p>
+    <p><strong>Correo:</strong> {{ estudiante.correo }}</p>
+    <p><strong>Estado:</strong> {{ estudiante.get_estado_display }}</p>
+    
+    <h2>Opciones:</h2>
+    <ul>
+        <li><a href="{% url 'procesar_pago_adelantado' estudiante.id '50%' %}">Registrar Pago Adelantado (50%)</a></li>
+        <li><a href="{% url 'procesar_pago_adelantado' estudiante.id '100%' %}">Registrar Pago Adelantado (100%)</a></li>
+        <li><a href="{% url 'lista_facturas_pendientes' %}">Ver Facturas Pendientes</a></li>
+    </ul>
+
+</div>
+
+
+<script>
+    // Obtenemos el primer mensaje de Django (si lo hay)
+    {% if messages %}
+        {% for message in messages %}
+            let icono = '';
+
+            // Determinamos el icono según el tipo de mensaje
+            switch ("{{ message.tags }}") {
+                case 'success':
+                    icono = 'success';
+                    break;
+                case 'error':
+                    icono = 'error';
+                    break;
+                case 'warning':
+                    icono = 'warning';
+                    break;
+                case 'info':
+                    icono = 'info';
+                    break;
+                default:
+                    icono = 'info'; // por defecto, mostramos un info
+            }
+
+            // Mostramos el toast con SweetAlert2
+            Swal.fire({
+                toast: true,
+                icon: icono,
+                title: "{{ message }}", // El contenido del mensaje
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+<script>
+    function confirmarEliminar(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esto.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realiza la solicitud AJAX para eliminar la sección
+                $.ajax({
+                    url: `{% url 'eliminar_estudiante' 0 %}`.replace('0', id), // URL de la vista de eliminación
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF para la seguridad
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Muestra el toast de éxito
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Eliminado!',
+                                text: 'El estudiante ha sido eliminada.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            }).then(() => {
+                                // Recarga la página después de mostrar el toast
+                                location.reload(); 
+                            });
+                        } else {
+                            // Muestra un mensaje de error si la eliminación falla
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.error,
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Manejo de errores en la solicitud AJAX
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un problema al intentar eliminar estudiante.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $('#estudiantesTable').DataTable({
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros en total)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            pageLength: 20,
+            responsive: true
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}

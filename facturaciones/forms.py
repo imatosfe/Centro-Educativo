@@ -23,3 +23,10 @@ class PagoForm(forms.ModelForm):
             'monto_pagado': forms.NumberInput(attrs={'class': 'form-control'}),
             'metodo_pago': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class PagoAdelantadoForm(forms.Form):
+    estudiante_id = forms.IntegerField(widget=forms.HiddenInput())
+    tipo_pago = forms.ChoiceField(
+        choices=[('50%', '50% del año escolar'), ('100%', '100% del año escolar')],
+        label="Tipo de Pago"
+    )
